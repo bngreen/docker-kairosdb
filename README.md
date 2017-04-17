@@ -16,7 +16,7 @@ services:
      - "9160"
      - "9042"
   kairos:
-    build: docker-kairosdb
+    build: .
     ports:
      - "8083:8083"
      - "4242:4242"
