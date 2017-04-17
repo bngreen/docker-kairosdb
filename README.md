@@ -1,17 +1,31 @@
 docker-kairosdb
 =======
 
-## Requirements
+## Docker Compose Example
 
-Dockerized cassandra
+docker-compose.yml: 
 
-    docker pull poklet/cassandra
-    docker pull poklet/opscenter
+```yml
+version: '2.1'
+services:
+  cassandra:
+    image: "cassandra:latest"
+    environment:
+     -  CASSANDRA_START_RPC='true'
+    expose:
+     - "9160"
+     - "9042"
+  kairos:
+    build: docker-kairosdb
+    ports:
+     - "8083:8083"
+     - "4242:4242"
+    environment:
+     - CASSANDRA_HOST_LIST=cassandra:9160
+     - CASSANDRA_WAIT_HOST=cassandra:9160
+    depends_on:
+     - cassandra
+```
 
-## Install
+Run: ```docker-compose up```
 
-    docker build -t kairosdb .
-
-## Run
-
-    docker run -d -p 8080:8080 -p 4242:4242 --name kairos kairosdb
